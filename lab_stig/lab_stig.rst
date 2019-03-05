@@ -101,7 +101,7 @@ You should see a similar output:
 
 .. code-block:: bash
 
-  root@NTNX-14SX35100046-A-CVM:10.21.71.29:~# ls -l
+  nutanix@NTNX-14SX35100046-A-CVM:10.21.71.29:~# sudo -u root ls -l
   total 248
   -rw-------. 1 root root   3314 Sep 11  2017 anaconda-ks.cfg
   drwxr-x---. 2 root root   4096 Dec 13 23:04 filesystems
