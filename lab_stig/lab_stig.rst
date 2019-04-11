@@ -1,7 +1,7 @@
 .. _lab_stig:
 
 -------------
-Lab - STIGs
+STIGs Lab
 -------------
 
 Overview
@@ -83,31 +83,25 @@ You can run a STIG report, which will check on all the STIGs and report on which
 
 The steps to run the STIG report are as follows:
 
-Connect to Controller VM (CVM) via SSH (Using Terminal, putty, or similar program)
+#. Connect to Controller VM (CVM) as nutanix user via SSH (Using Terminal, putty, or similar program)
 
-Elevate your privileges to root to execute the report (you won’t have to enter a password)
-
-.. code-block:: bash
-
-  sudo su root
-
-Change to the root directory of the CVM
+#. Change to the root directory of the CVM
 
 .. code-block:: bash
 
-  cd /root
+  cd /
 
-Within the /root directory, list the files available to the root user to execute
+#. List the files available to the root user to execute within the /root directory.
 
 .. code-block:: bash
 
-  ls -l
+  sudo -u root ls -l root
 
 You should see a similar output:
 
 .. code-block:: bash
 
-  root@NTNX-14SX35100046-A-CVM:10.21.71.29:~# ls -l
+  nutanix@NTNX-14SX35100046-A-CVM:10.21.71.29:~# sudo -u root ls -l root
   total 248
   -rw-------. 1 root root   3314 Sep 11  2017 anaconda-ks.cfg
   drwxr-x---. 2 root root   4096 Dec 13 23:04 filesystems
@@ -123,47 +117,43 @@ You should see a similar output:
 
 There should be three .sh files that end in _stig.sh and you’ll want to run the one that outputs the report in the format you prefer.
 
-In this example, we’ll run the generic text output “report_stig.sh”
+#. In this example, we’ll run the generic text output “report_stig.sh”
 
 .. code-block:: bash
 
-  ./report_stig.sh
+  sudo -u root ./root/report_stig.sh
 
 The output will go into the root user log folder.
 
-To get the file, you’ll need to change to that folder and change the permissions on the report we just created.
+#. List the files in the folder and note the name of the report.
 
 .. code-block:: bash
 
-  cd /home/log
+  sudo -u root ls -l home/log | grep STIG
 
-List the files in the folder and note the name of the report.
-
-.. code-block:: bash
-
-  ls -l | grep STIG
-
-Change the permissions on the report we ran earlier, substituting the actual file name for the asterisks.
+#. Copy the report to the nutanix home directory, substituting the actual file name for the asterisks.
 
 .. code-block:: bash
 
-  chmod 777 STIG-report-**-**-****-**-**-**
+  sudo -u root cp home/log STIG-report-**-**-****-**-**-** /home/nutanix
 
-Copy the report to the nutanix home directory, substituting the actual file name for the asterisks.
-
-.. code-block:: bash
-
-  cp STIG-report-**-**-****-**-**-** /home/Nutanix
-
-Change the owner of the report file to be the Nutanix user
+#. List the files in the /home/nutanix folder.
 
 .. code-block:: bash
 
-  chown nutanix:nutanix /home/Nutanix/STIG-report-**-**-****-**-**-**
+  ls -l ~
 
-Use a secure copy tool (SCP, WINSCP, PSCP, etc) to copy the report results file to your workstation from the CVM.
+#. Change the owner of the report file to be the Nutanix user, substituting the actual file name for the asterisks.
 
-Be sure to login to the CVM using the **nutanix** username and browse to its home directory to find the file we created above.
+.. code-block:: bash
+
+  sudo -u root chown nutanix:nutanix /home/nutanix/STIG-report-**-**-****-**-**-**
+
+#. Use a secure copy tool (SCP, WINSCP, PSCP, etc) to copy the report results file to your workstation from the CVM.
+
+.. note::
+
+  Be sure to login to the CVM using the **nutanix** username and browse to its home directory to find the file we created above.
 
 Analyzing the STIG Report
 +++++++++++++++++++++++++
@@ -216,115 +206,111 @@ In this section we are going to pretend to be the ‘bad guy’ and compromise t
 Compromise the /etc/shadow file
 ...............................
 
-The following text was extracted from one of the security checks under the AOS STIGs:
+#. The following text was extracted from one of the security checks under the AOS STIGs:
 
 - **Rule Version (STIG-ID)**: NTNX-51-000034
 - **Rule Title**: The /etc/shadow file must be group-owned by root.
 - **Fix Text**: salt-call state.sls security/CVM/fdpermsownerCVM
 
-Let’s elevate privileges to root to change the group ownership permissions of the /etc/shadow with the following commands:
-
-Elevate privileges:
+#. Change to the root directory of the CVM
 
 .. code-block:: bash
 
-  sudo su root
+  cd /
 
-Verify the current ownership:
+#. Verify the current ownership:
 
 .. code-block:: bash
 
-  ls -l /etc/shadow
+  sudo -u root ls -l etc/shadow
   ----------. 1 root root 943 Dec 18 15:37 /etc/shadow
 
-Change the group ownership:
+#. Change the group ownership:
 
 .. code-block:: bash
 
-  chown root:nutanix /etc/shadow
+  sudo -u root chown root:nutanix /etc/shadow
   ls -l /etc/shadow
   ----------. 1 root nutanix 943 Dec 18 15:37 /etc/shadow
 
-Manually run the salt call to fix this vulnerability:
+#. Manually run the salt call to fix this vulnerability:
 
 .. code-block:: bash
 
-  salt-call state.sls security/CVM/fdpermsownerCVM
+  sudo -u root salt-call state.sls security/CVM/fdpermsownerCVM
 
-Verify the fix has taken place:
+#. Verify the fix has taken place:
 
 .. code-block:: bash
 
-  ls -l /etc/shadow
+  sudo -u root ls -l etc/shadow
 
 Compromise a world-writable directory /tmp
 ..........................................
 
-From the report you generated in a previous section, download it or access it from the console in order to get the state of the following check:
+#. From the report you generated in a previous section, download it or access it from the console in order to get the state of the following check:
 
 All world-writable directories must be group-owned by root, sys, bin, or an application group.
 The result of the check should be yes.  If no, then it's a finding
 yes
 Completed.
 
-You can search for this specific report from the CVM console where the report was run and using the following command:
+#. Change to the root directory of the CVM
 
 .. code-block:: bash
 
-  grep -A 4 -B 1 "All world-writable directories " /home/log/STIG-report-**-**-****-**-**-**
-Where the stars are to be substituted by your report’s id.
+  cd /
 
-It should say yes by default.
-
-Let’s compromise the system so that this check says “no” and then manually fix the issue.
-
-Elevate privileges:
+#. You can search for this specific report from the CVM console where the report was run and using the following command, substituting the actual file name for the asterisks.:
 
 .. code-block:: bash
 
-  sudo su root
+  sudo -u root grep -A 4 -B 1 "All world-writable directories " /home/log/STIG-report-**-**-****-**-**-**
 
-Verify the current ownership:
+#. It should say yes by default.
+
+#. Let’s compromise the system so that this check says “no” and then manually fix the issue.
+
+#. Verify the current ownership:
 
 .. code-block:: bash
 
-  ls -l / |grep  tmp
+  sudo -u root ls -l / | grep  tmp
   drwxrwxrwt.  14 root root  1024 Dec 21 02:59 tmp
 
-Change the group ownership:
+#. Change the group ownership:
 
 .. code-block:: bash
 
-  chown root:nutanix /tmp
+  sudo -u root chown root:nutanix /tmp
 
-Verify the ownership change:
+#. Verify the ownership change:
 
 .. code-block:: bash
 
-  ls -l / | grep tmp
+  sudo -u root ls -l / | grep  tmp
   drwxrwxrwt.  14 root nutanix  1024 Dec 21 03:16 tmp
 
-After we have achieved this, let’s re-run the report to see if this change has been detected
+#. After we have achieved this, let’s re-run the report to see if this change has been detected
 
 .. code-block:: bash
 
-  cd /root
-  ./report_stig.sh
-  grep -A 4 -B 1 "All world-writable directories " /home/log/STIG-report-**-**-****-**-**-**
+  sudo -u root ./root/report_stig.sh
+  sudo -u root grep -A 4 -B 1 "All world-writable directories " /home/log/STIG-report-**-**-****-**-**-**
 
-You should see a “no” this time, indicating a finding.
+#. You should see a “no” this time, indicating a finding.
 
-Manually run the salt call to fix this vulnerability:
-
-.. code-block:: bash
-
-  salt-call state.sls security/CVM/fdpermsownerCVM
-
-List the / directory again and note that the ‘compromise’ has been reverted back.
+#. Manually run the salt call to fix this vulnerability:
 
 .. code-block:: bash
 
-  ls -l / | grep tmp
+  sudo -u root salt-call state.sls security/CVM/fdpermsownerCVM
+
+#. List the / directory again and note that the ‘compromise’ has been reverted back.
+
+.. code-block:: bash
+
+  sudo -u root ls -l / | grep  tmp
   drwxrwxrwt.  14 root root  1024 Dec 21 03:42 tmp
 
 Takeaways

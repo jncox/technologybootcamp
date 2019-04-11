@@ -1,7 +1,7 @@
 .. _lab_network_configuration:
 
 ------------------------------
-Lab - Networking Configuration
+Networking Configuration Lab
 ------------------------------
 
 Overview
@@ -12,9 +12,15 @@ Learn how to set up a network in the cluster using Prism. The networks you creat
 AHV Networking Background
 +++++++++++++++++++++++++
 
-AHV simplifies networking. Typically, nodes are connected with a trunked VLAN such that multiple VM networks can be surfaced into the environment.
+AHV leverages Open vSwitch (OVS) for all VM networking. OVS is an open source software switch implemented in the Linux kernel and designed to work in a multiserver virtualization environment. Each AHV server maintains an OVS instance, and all OVS instances combine to form a single logical switch.
+
+Each node is typically uplinked to a physical switch port trunked/tagged to multiple VLANs, which will be exposed as virtual networks.
+
+VM networking is configured through Prism (or optionally CLI/REST), making network management in AHV very simple. In the following exercise you will walk through virtual network creation in AHV.
 
 With AHV, you can also setup a DHCP server to automatically provide IP addresses for VMs using the IP address management (IPAM) service.
+
+Additional details about AHV networking can be found `here <https://nutanixbible.com/#anchor-book-of-ahv-networking>`_.
 
 Virtual Networks
 ................
@@ -49,51 +55,54 @@ IP Address Management (IPAM)
 Configure Network
 +++++++++++++++++
 
-In this exercise, we intentionally use invalid VLANs so no communication is possible from VMs placed on the network.
-
 .. note::
 
-  This exercise is for demonstration purposes only. VMs connected to networks other than vlan 0 get a DHCP IP, but the network is not valid and does not transmit any traffic.
+   In the following exercise you will create networks using invalid VLANs, meaning no VM traffic will be transmitted outside of an individual host. This is expected as the exercise is for demonstration/education purposes only.
 
-Setup user VM network
+Setup User VM Network
 .....................
 
 Connect to Prism Element and create a network for user VM interfaces. Use any VLAN other than 0, and do not enable IP address management.
 
-In **Prism Element > VM**, click **VMs**, then click **Network Config**
+#. In **Prism Element > VM**, click **VMs**, then click **Network Config**.
 
-Next click **VM Networks**, then click **+ Create Network**.
+#. Select **VM Networks**, then click **+ Create Network**.
 
-Fill out the following fields and click **Save**:
+#. Fill out the following fields and click **Save**:
 
-- **Name** - Network-*initials*
-- **VLAN ID** - Something other than 0
-- **Enable IP Address Management** - unchecked
+   - **Name** - *Initials*-Network
+   - **VLAN ID** - A value (< 4096) other than your **Primary** or **Secondary** network VLANs
+   - Do not select **Enable IP Address Management**
 
-The final result should look like the image below.
+   The final result should look like the image below.
 
-.. figure:: images/network_config_04.png
+   .. figure:: images/network_config_04.png
 
-Setup user VM network with IPAM
+   The configured virtual network will now be available across all nodes within the cluster. Virtual networks in AHV behave like Distributed Virtual Switches in ESXi, meaning you do not need to configure the same settings on each individual host within the cluster. When creating VMs in IPAM managed networks, the IP can optionally be manually specified during vNIC creation.
+
+Setup User VM Network with IPAM
 ...............................
-
 
 Create another network, but this time enable IPAM.
 
-Fill out the following fields and click **Save**:
+#. Fill out the following fields and click **Save**:
 
-- **Name** - Network_IPAM-*initials*
-- **VLAN ID** - Something other than 0
-- **Enable IP Address Management** - Checked
-- **Network IP Address / Prefix Length** - 10.0.0.0/24
-- **Gateway** - 10.0.0.1
-- **Configure Domain Settings** - unchecked
-- **Create Pool** - 10.0.0.100-10.0.0.150
-- **Override DHCP Server** - unchecked
+   - **Name** - *Initials*-Network_IPAM
+   - **VLAN ID** - A value (< 4096) other than your **Primary** or **Secondary** network VLANs
+   - Select **Enable IP Address Management**
+   - **Network IP Address / Prefix Length** - 10.0.0.0/24
+   - **Gateway** - 10.0.0.1
+   - Do not select **Configure Domain Settings**
+   - **Create Pool** - 10.0.0.100-10.0.0.150
+   - Do not select **Override DHCP Server**
 
-.. note::
+   .. figure:: images/network_config_03.png
 
-  It is possible to create multiple pool ranges for a network.
+   .. note::
+
+     It is possible to create multiple pool ranges for a network.
+
+   The configured virtual network will now be available across all nodes within the cluster. VMs with vNICs on this network will receive a DHCP address from the range specified. This IP assignment lasts for the life of the VM, avoiding the need to depend on DHCP reservations or static IPs for many workloads.
 
 Takeaways
 +++++++++

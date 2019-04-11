@@ -1,104 +1,108 @@
 .. _lab_data_protection:
 
 ---------------------
-Lab - Data Protection
+Data Protection Lab
 ---------------------
 
 Overview
 ++++++++
 
-Learn how to set up protection domains, create VM snapshots, and restore from those snapshots.
+Nutanix provides the ability to perform VM/vDisk-level storage snapshots. Protection Domains (PDs) are the construct for grouping VMs and applying snapshot and replication policies.
+
+In this exercise you will use Prism to create and restore from VM snapshots, as well as create a Protection Domain for your VMs.
 
 Data Protection
 +++++++++++++++
 
-In Prism, data protection policies are called protection domains (PDs). A PD is made up of a set of VMs and a policy. The available policies include snapshots, replication locations, and schedules.
-
-VM snapshots
+VM Snapshots
 ............
 
-Create a VM snapshot and restore a VM from a snapshot.
+#. In **Prism Element > VM > Table**, select your *Initials*-**Linux_VM** VM.
 
-In **Prism Element > VM**, click **VM**, then click **Table**.
+#. If the VM is powered on, perform a **Guest Shutdown** power action.
 
-Locate the Linux VM you created in the previous lab (Linux_VM-*intials*).
+#. Select the VM and click **Snapshot** from the menu below the table.
 
-- If the VM is powered on, power it Off
+#. Provide a name for your snapshot and click **Submit**.
 
-Select the VM, then click **Snapshot** from the menu below the list of VMs.
+#. Select the **VM Snapshots** tab below the table to view the available snapshots for the selected VM.
 
-Provide a name for your snapshot.
+   .. figure:: images/manage_workloads_04.png
 
-Return to VMs table and click the VM’s name to open its console window.
+#. Under **Actions**, click **Details** to see all of the VM’s properties at the time of the snapshot.
 
-Click **Snapshots** to see your snapshot.
+   You can see the snapshot contains VM state in addition to just its data.
 
-- Note the four available actions (Details, Clone, Restore, and Delete).
+   *Now it's time to break your VM!*
 
-Click **Details** to see all of the VM’s properties at the time of the snapshot.
+#. Click **Update** to modify your VM and remove both the CD-ROM and DISK by clicking the **X** icon for each item.
 
-Now lets break our VM.
+#. Click **Save**.
 
-Click **Update** from the menu below and modify the original VM you took the snapshot of.
+#. Attempt to power on the VM and launch its console window.
 
-- Scroll down to the disks section and delete the CD-ROM and DISK by clicking the **X** icon for each item.
-- Click **Save** to finalize the changes.
+   Note that the VM no longer has any disks from which to boot and that the 2048 game is displayed.
 
-Now attempt to power on that VM and open its console window.
+#. Power off the VM.
 
-- Note that the VM no longer has any disks to boot from and that the 2048 game is displayed.
+#. Under **VM Snapshots**, select your snapshot and click **Restore** to revert the VM to a functioning state.
 
-Power off the VM.
+   Alternatively you can click **Clone** to restore to a new VM.
 
-Select the VM, then click **VM Snapshots** from the menu below the list of VMs.
+#. Verify that the VM boots successfully.
 
-Click **Restore** to revert the VM to the state it was in before you removed the disks.
+As previously mentioned, Nutanix snapshots use a `redirect-on-write <https://nutanixbible.com/#anchor-book-of-acropolis-snapshots-and-clones>`_ approach that does not suffer from the performance degradation of chained snapshots found in other hypervisors.
 
-Attempt to power on the VM and open the console.
+Protection Domains
+..................
 
-Verify that the VM boots successfully and that its configuration has been restored.
+#. In **Prism Element > Data Protection > Table**, click **+ Protection Domain > Async DR** to begin creating a PD.
 
-Configure a Protection Domain (PD)
-..................................
+   .. note::
 
-In **Prism Element > Data Protection**, click **Data Protection**, then click **Table**.
+      Synchronous replication (Metro Availability) is currently support on ESXi and will be supported in AHV in a future release.
 
-Click **+ Protection Domain** to create a PD, then click Async DR.
+#. Provide a name for the PD, and click **Create**.
 
-Provide a name for the PD, and click **Create**.
+#. Filter or scroll to select the VMs created during this lab that you want to add to the PD.
 
-Select the VMs that you want be members of the PD:
+#. Click **Protect Selected Entities** and verify the VMs appear under **Protected Entities**.
 
-- Filter or scroll to select the VMs you created in this bootcamp to be part of the PD.
-- Scroll down and click **Protect Selected Entities**.
-- The selected VMs appear in the right-hand side table. Click **Next**.
+   Consistency groups allow you to group multiple VMs to be snapshot at the same time, e.g. multiple VMs belonging to the same application.
 
-Configure a local schedule:
+   .. note:: Nutanix snapshots can perform application consistent snapshots for supported operating systems with NGT installed. Each VM using application consistent snapshots will be part of its own consistency group.
 
-- Click **New Schedule**.
-- Select a frequency (for example, repeat every one day).
+#. Click **Next**.
 
-Configure a retention policy:
+#. Click **New Schedule** to define Recovery Point Objective (RPO) and retention.
 
-- Set the retention policy (for example, keep the last two snapshots).
+#. Configure your desired snapshot frequency (e.g. Repeat every 1 hour)
 
-.. note::
+   .. note::
 
-  Local is the only option in this lab environment because no remote targets are configured.
+      AHV supports NearSync snapshots, with RPOs as low as 1 minute.
 
-  You could setup a remote site with a neighbor cluster.
+   .. note::
 
-Click **Create Schedule**.
+      Multiple schedules can be applied to the same PD, allowing you to take and retain X number of hourly, daily, monthly snapshots.
 
-.. note::
+#. Configure a retention policy (e.g. Keep the last 5 snapshots)
 
-  A Protection Domain can have multiple schedules.
+   .. note::
 
-Click **Close** to exit.
+      For environments with remote cluster(s) configured, setting up replication is as easy as defining how many snapshots to keep at each remote site.
+
+      .. figure:: images/snapshot_02.png
+
+#. Click **Create Schedule**.
+
+#. Click **Close** to exit.
+
+That's it! You've successfully configured native data protection in Prism.
 
 Takeaways
 +++++++++
 
 - Nutanix offers data protection solutions for virtual datacenters via different strategies including one-to-one or one-to-many replication.
 - Nutanix provides data protection functions at the VM, file, and volume group level, so VMs and data remain safe in a crash-consistent environment.
-- You can implement a data protection strategy by configuring protection domains and remote sites through the web console.
+- VM-level snapshot and replication policies can be managed through Prism for any supported hypervisor.

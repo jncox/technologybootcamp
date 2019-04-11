@@ -1,127 +1,148 @@
 .. _lab_deploy_workloads:
 
 -------------------------
-Lab - Deploying Workloads
+Deploying Workloads Lab
 -------------------------
 
 Overview
 ++++++++
 
-Learn about basic VM deployment.
+In addition to storage, VM creation, management, and monitoring can all be performed for Nutanix AHV directly through Prism.
 
-Creating a Linux VM
+.. note::
+
+   Prism also offers native support for VM CRUD operations for Nutanix clusters running ESXi.
+
+In the following exercise we'll walk through creating VMs from source media and from existing disk images.
+
+Deploying Workloads
 +++++++++++++++++++
 
-Deploy a Linux VM from Prism Element.
-
-In **Prism Element > VM > Table**, click **+ Create VM**.
-
-Fill out the following fields and click **Save**:
-
-- **Name** - Linux_VM-*initials*
-- **Description** - (Optional) Description for your VM.
-- **vCPU(s)** - 1
-- **Number of Cores per vCPU** - 1
-- **Memory** - 2 GiB
-
-.. figure:: images/deploy_workloads_03.png
-
-- Select **+ Add New Disk**
-    - **Type** - DISK
-    - **Operation** - Clone from Image Service
-    - **Image** - CentOS7.qcow2
-    - Select **Add**
-
-- Select **Add New NIC**
-    - **VLAN Name** - Primary
-    - Select **Add**
-
-Click **Save** to create the VM.
-
 Creating a Windows VM
-+++++++++++++++++++++
+.....................
 
-Deploy a Windows VM from Prism Element.
+In this exercise you will create a Windows Server VM from a Windows installation ISO image.
+
+AHV provides an **Image Service** feature allows you to build a store of imported files that you can use to create a CD-ROM from an ISO image or an operating system Disk from a disk image when creating a VM. The Image Service supports raw, vhd, vhdx, vmdk, vdi, iso, and qcow2 disk formats.
 
 .. note::
 
-  Nutanix provides a set of guest tools and drivers comparable to VMware Tools. To install a Windows-based OS, the I/O drivers must be provided at install time. Nutanix provides a customized set of virtualized I/O drivers for Windows OS on AHV.
+   You can explore the available images and upload additional images under :fa:`cog` **> Image Configuration** in Prism Element.
 
-In **Prism Element > VM > Table**, click **+ Create VM**.
+In order to provide high performance IO to VMs, AHV requires the installation of paravirtualized drivers into the guest (similar to VMware Tools). For Windows guests specifically, these drivers must be loaded during installation in order for the VM's disk to be accessible by the Windows installer.
 
-Fill out the following fields and click **Save**:
+Nutanix validates and distributes these drivers via http://portal.nutanix.com. The ISO image containing the drivers has already been uploaded to the Image Service.
 
-- **Name** - Windows_VM-*initials*
-- **Description** - (Optional) Description for your VM.
-- **vCPU(s)** - 2
-- **Number of Cores per vCPU** - 1
-- **Memory** - 4 GiB
-- Select :fa:`pencil` next to CDROM
-    - **Operation** - Clone from Image Service
-    - **Image** - Windows2012R2.ISO
-    - Select **Update**
+#. In **Prism Element > VM > Table**, click **+ Create VM**.
 
-- Select **+ Add New Disk**
-    - **Type** - DISK
-    - **Operation** - Allocate on Storage Container
-    - **Storage Container** - Default Container
-    - **Size (GiB)** - 30 GiB
-    - Select **Add**
+#. Fill out the following fields and click **Save**:
 
-- Select **+ Add New Disk**
-    - **Type** - CDROM
-    - **Operation** - Clone from Image Service
-    - **Image** - Nutanix VirtIO
-    - Select **Add**
+   - **Name** - *Initials*-Windows_VM
+   - **Description** - (Optional) Description for your VM.
+   - **vCPU(s)** - 2
+   - **Number of Cores per vCPU** - 1
+   - **Memory** - 4 GiB
+   - Select :fa:`pencil` next to CDROM
+       - **Operation** - Clone from Image Service
+       - **Image** - Windows2012R2.ISO
+       - Select **Update**
+       *This will mount the Windows Server ISO from the Image Service for boot/installation*
 
-- Select **Add New NIC**
-    - **VLAN Name** - Primary
+   - Select **+ Add New Disk**
+       - **Type** - DISK
+       - **Operation** - Allocate on Storage Container
+       - **Storage Container** - Default Container
+       - **Size (GiB)** - 30 GiB
+       - Select **Add**
+       *This will create a 30GiB vDisk on the selected Storage Container*
+
+   - Select **+ Add New Disk**
+       - **Type** - CDROM
+       - **Operation** - Clone from Image Service
+       - **Image** - Nutanix VirtIO ISO
+       - Select **Add**
+
+   - Select **Add New NIC**
+       - **VLAN Name** - Primary
+       - Select **Add**
+       *This will add a single virtual NIC to the VM on the selected Virtual Network*
+
+#. Click **Save** to create the VM.
+
+#. Select the VM, then click **Power On** from the **Actions** drop-down menu to turn on the VM.
+
+#. Select the VM, then click **Launch Console** from the **Actions** drop-down menu to access an HTML5 console to interact with the VM.
+
+#. Progress through the standard install questions until you reach the Windows install location.
+
+   .. note::
+     Choose **Datacenter with GUI** and **Custom** installation when presented with the choice.
+
+#. Click **Load Driver** and navigate to the CD where the Nutanix VirtIO is mounted.
+
+#. Browse the CD, and select the directory that corresponds to the Windows OS being installed.
+
+   .. figure:: images/deploy_workloads_05.png
+
+   .. figure:: images/deploy_workloads_06.png
+
+#. Select the three Nutanix drivers displayed (Press and hold the Ctrl key and select all three drivers):
+
+   - Balloon
+   - Ethernet adapter
+   - SCSI passthrough controller
+
+   .. figure:: images/deploy_workloads_07.png
+
+#. Click **Next**.
+
+   After the drivers are loaded, the disk created in Step 2 appears as an installation target.
+
+#. Select that disk and continue with the normal install process.
+
+#. After the installation completes, the Windows install ISO can be unmounted and the additional CD-ROM used for the drivers can be removed from the VM.
+
+   .. note::
+
+     For ESXi clusters, if a VM is created via VMware vSphere, it appears in the Prism VMs list. Alternatively, if a VM is created via Prism, it appears in the VMware vSphere UI. No manual syncing or waiting is required.
+
+     .. figure:: images/deploy_workloads_08.png
+
+#. Following OS installation you can complete the **Nutanix Guest Tools (NGT)** installtion by selecting the VM in Prism and clicking **Manage Guest Tools > Enable Guest Tools > Mount Guest Tools**.
+
+   This will use the virtual CD-ROM device to mount the NGT installation ISO to the VM. NGT includes the previously installed VirtIO drivers, as well as services to support self-service file restore and application consistent (VSS) snapshots.
+
+#. Return to the VM console to complete the NGT installation.
+
+Creating a Linux VM
+...................
+
+In this exercise you will create a CentOS VM from an existing, pre-installed disk image in the Image Service. It is common in many environments to have "template" style images of pre-installed operating systems. Similar to the previous exercise, the disk image has already been uploaded to the Image Service.
+
+#. In **Prism Element > VM > Table**, click **+ Create VM**.
+
+#. Fill out the following fields and click **Save**:
+
+   - **Name** - *Initials*-Linux_VM
+   - **Description** - (Optional) Description for your VM.
+   - **vCPU(s)** - 1
+   - **Number of Cores per vCPU** - 1
+   - **Memory** - 2 GiB
+
+   - Select **+ Add New Disk**
+      - **Type** - DISK
+      - **Operation** - Clone from Image Service
+      - **Image** - CentOS7.qcow2
+      - Select **Add**
+      *This will create a thin clone of the existing CentOS disk image*
+
+   - Select **Add New NIC**
+      - **VLAN Name** - Primary
       - Select **Add**
 
-Click **Save** to create the VM.
+   .. figure:: images/deploy_workloads_03.png
 
-Now lets power on the VM:
-
-Select the VM, then click **Power On** from the **Actions** drop-down menu.
-
-Next lets open a console session:
-
-Select the VM, then click **Launch Console** from the **Actions** drop-down menu.
-
-Progress through the standard install questions until you reach the Windows install location.
-
-.. note::
-  Choose **Datacenter with GUI** and **Custom** installation when presented with the choice.
-
-Click **Load Driver** and navigate to the CD where the Nutanix VirtIO is mounted.
-
-Browse the CD, and select the directory that corresponds to the Windows OS being installed.
-
-.. figure:: images/deploy_workloads_05.png
-
-.. figure:: images/deploy_workloads_06.png
-
-Select the three Nutanix drivers displayed (Press and hold the Ctrl key and select all three drivers):
-
-- Balloon
-- Ethernet adapter
-- SCSI passthrough controller
-
-.. figure:: images/deploy_workloads_07.png
-
-Click Next.
-
-After the drivers are loaded, the disk created in step 1 appears as an installation target. Select that disk and continue with the normal install process.
-
-After the installation completes, the Windows install ISO can be unmounted and the additional CD-ROM used for the drivers can be removed from the VM.
-
-.. note::
-
-  In ESXi:
-
-  - After a VM is created via VMware vSphere, it appears in the Prism VMs list.
-  - Alternatively, if a VM is created via Prism, it appears in the VMware vSphere UI. An example is shown in the image below.
-  .. figure:: images/deploy_workloads_08.png
+#. Click **Save** to create the VM.
 
 Takeaways
 +++++++++

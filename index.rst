@@ -11,8 +11,8 @@
 
 .. toctree::
   :maxdepth: 2
-  :caption: Nutanix Configuration Labs
-  :name: _nutanix_configuration_labs
+  :caption: Nutanix Configuration
+  :name: _nutanix_configuration
   :hidden:
 
   lab_nutanix_tech_overview/lab_nutanix_tech_overview
@@ -54,7 +54,7 @@
   :name: _optional_labs
   :hidden:
 
-  lab_image_configuration/lab_image_configuration
+  .. lab_image_configuration/lab_image_configuration
 
 .. toctree::
   :maxdepth: 2
@@ -71,8 +71,11 @@
 Getting Started
 ---------------
 
-Welcome to the Nutanix Technology Bootcamp! This workbook accompanies an instructor-led session that introduces Nutanix technologies and many common management tasks. Each section has a lesson and an exercise to give you hands-on practice. The instructor explains the exercises and answers any additional questions that you may have.
-At the end of the bootcamp, attendees should understand the basic concepts and technologies that make up the Nutanix Enterprise Cloud stack and should be well prepared for a hosted or onsite proof-of-concept (POC) engagement.
+Welcome to the Nutanix Technology Bootcamp! This workbook accompanies an instructor-led session that introduces Nutanix Core technologies and many common management tasks.
+
+You will explore Prism Element and become familiar with its features and navigation. You will use Prism to perform basic cluster administration tasks, including storage and networking. You will also walk through basic VM deployment and management tasks with Prism and AHV. Finally, you will explore VM data protection, including snapshots and replication. The instructor explains the exercises and answers any additional questions that you may have.
+
+At the end of the bootcamp, attendees should understand the Core concepts and technologies that make up the Nutanix Enterprise Cloud stack and should be well prepared for a hosted or onsite proof-of-concept (POC) engagement.
 
 What's New
 ++++++++++
@@ -87,8 +90,9 @@ Agenda
 
 - Introductions
 - Nutanix Technology Overview
-- Nutanix Configuration Labs
+- Nutanix Configuration
 - Deploying and Managing Workloads
+- Security Compliance
 - Monitoring and Managing the Environment
 
 Introductions
@@ -216,30 +220,31 @@ Access Instructions
 
 The Nutanix Hosted POC environment can be accessed a number of different ways:
 
-Citrix XenDesktop
+Parallels VDI
 .................
 
-https://citrixready.nutanix.com - *Accessible via the Citrix Receiver client or HTML5*
+Login to: https://xld-uswest1.nutanix.com (for PHX) or https://xld-useast1.nutanix.com (for RTP)
 
 **Nutanix Employees** - Use your NUTANIXDC credentials
 **Non-Employees** - **Username:** POCxxx-User01 (up to POCxxx-User20), **Password:** *<Provided by Instructor>*
 
-Employee Pulse Secure VPN
+Pulse Secure VPN
 ..........................
 
-https://sslvpn.nutanix.com - Use your CORP credentials
+To download the client: login to https://xlv-uswest1.nutanix.com or https://xlv-useast1.nutanix.com - **Username:** POCxxx-User01 (up to POCxxx-User20), **Password:** *<Provided by Instructor>*
 
-Non-Employee Pulse Secure VPN
-..............................
+Download and install the client.
 
-https://lab-vpn.nutanix.com - **Username:** POCxxx-User01 (up to POCxxx-User20), **Password:** *<Provided by Instructor>*
+In Pulse Secure Client, **Add** a connection:
 
-Under **Client Application Sessions**, click **Start** to the right of **Pulse Secure** to download the client.
-
-Install and open **Pulse Secure**.
-
-Add a connection:
+For PHX:
 
 - **Type** - Policy Secure (UAC) or Connection Server
-- **Name** - HPOC VPN
-- **Server URL** - lab-vpn.nutanix.com
+- **Name** - X-Labs - PHX
+- **Server URL** - xlv-uswest1.nutanix.com
+
+For RTP:
+
+- **Type** - Policy Secure (UAC) or Connection Server
+- **Name** - X-Labs - RTP
+- **Server URL** - xlv-useast1.nutanix.com

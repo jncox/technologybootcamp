@@ -1,7 +1,7 @@
 .. _lab_nutanix_technology_overview:
 
 ---------------------------------
-Lab - Nutanix Tech Overview
+Nutanix Tech Overview Lab
 ---------------------------------
 
 Overview
@@ -12,70 +12,70 @@ This lab will introduce the Prism Element UI, and familiarize you with its layou
 Prism Element
 +++++++++++++
 
+The Prism service provides the web UI for managing Nutanix clusters and runs on every Controller VM (CVM). This local Prism service, referred to Prism Element, can be accessed via the IP of any individual CVM, or via the virtual IP for the cluster, which will redirect to the current Prism leader.
+
 From the Firefox web browser (preferred), log into the Nutanix Prism GUI using the Cluster IP.
 
-Open https://<*NUTANIX-CLUSTER-IP*>:9440
+#. Open \https://<*NUTANIX-CLUSTER-IP*>:9440 in a new browser tab.
 
-Fill out the following fields and click **Enter**:
+#. Log in using the following credentials:
 
-- **Username** - admin
-- **Password** - *HPOC Password*
+   - **Username** - admin
+   - **Password** - *HPOC Password*
 
-.. figure:: images/nutanix_tech_overview_01.png
+   .. figure:: images/nutanix_tech_overview_01.png
 
-After you log in to Prism Element, familiarize yourself with the Prism UI. Explore the information on the **Home** screen, as well as the other screens.
+#. After you log in to Prism Element, familiarize yourself with the Prism UI. Explore the information on the **Home** screen, as well as the other screens.
 
-Review the Home screen, and identify the following items:
+#. Review the Home screen, and identify the following items:
 
-- Hypervisor
-- Version
-- Hardware Model
-- Health
-- VM Summary
-- Warning Alerts
-- Data Resiliency Status
+   - Hypervisor
+   - Version
+   - Hardware Model
+   - Health
+   - VM Summary
+   - Warning Alerts
+   - Data Resiliency Status
 
-.. figure:: images/nutanix_tech_overview_02.png
+   .. figure:: images/nutanix_tech_overview_02.png
 
-Review the UI navigation options.
+#. Review the UI navigation options.
 
-.. figure:: images/nutanix_tech_overview_03.png
+   .. figure:: images/nutanix_tech_overview_03.png
 
-Examine the cluster hardware by using the navigation menu, and go to the Hardware.
+#. Examine the cluster hardware under **Prism > Hardware**, click **Hardware**, then click **Diagram**.
 
-In **Prism > Hardware**, click **Hardware**, then click **Diagram**.
+#. Review the hardware summary information:
 
-Review the hardware summary information:
+   - Blocks
+   - Hosts
+   - Memory
+   - CPU
+   - Disks
 
-- Blocks
-- Hosts
-- Memory
-- CPU
-- Disks
+   .. figure:: images/nutanix_tech_overview_04.png
 
-.. figure:: images/nutanix_tech_overview_04.png
+#. Review the other sections, and do a quick walk through:
 
-Review the other sections, and do a quick walk through:
+   - VM
+   - Health
+   - Network
+   - Data Protection
+   - Storage
+   - Alerts
+   - Etc.
 
-- VM
-- Health
-- Network
-- Data Protection
-- Storage
-- Alerts
-- Etc.
+#. Review other sections of the Prism UI
 
-Review other sections of the Prism UI
+   - Health :fa:`heartbeat`
+   - Alarms :fa:`bell`
+   - Tasks :fa:`circle-o`
+   - Search :fa:`search`
+   - Help :fa:`question`
+   - Configuration :fa:`cog`
+   - User :fa:`user`
 
-- Health :fa:`heartbeat`
-- Alarms :fa:`bell`
-- Tasks :fa:`circle-o`
-- Search :fa:`search`
-- Help :fa:`question`
-- Configuration :fa:`cog`
-- User :fa:`user`
-
-.. figure:: images/nutanix_tech_overview_05.png
+   .. figure:: images/nutanix_tech_overview_05.png
 
 .......................
 Prism Element UI Review
