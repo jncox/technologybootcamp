@@ -7,109 +7,108 @@ Files: Create SMB Share
 Overview
 ++++++++
 
-.. note::
+In this exercise you will create and test a SMB share, used to support home directories, user profiles, and other unstructured file data such as departmental shares commonly accessed by Windows clients.
 
-  Estimated time to complete: **1 HOUR**
+Using SMB Shares
+++++++++++++++++
 
-In this exercise you will use Files to configure a SMB share.
+Creating the Share
+..................
 
-Configuring SMB Home Share
-++++++++++++++++++++++++++
+#. In **Prism > File Server**, click **+ Share/Export**.
 
-In **Prism > File Server**, click **+ Share/Export**. Fill out the following fields and click **Next**:
+#. Fill out the following fields:
 
-  - **Name** - marketing
-  - **Protocol** - SMB
-  - **Share/Export Type** - General Purpose Share
+   - **Name** - Marketing
+   - **Description (Optional)** - Departmental share for marketing team
+   - **File Server** - *Initials*\ **-Files**
+   - **Share Path (Optional)** - Leave blank. This field allows you to specify an existing path in which to create the nested share.
+   - **Max Size (Optional)** - Leave blank. This field allows you to set a hard quota for the individual share.
+   - **Select Protocol** - SMB
 
-.. figure:: images/files_smb_001.png
+   .. figure:: images/14.png
 
-Select **Enable Access Based Enumeration** and **Self Service Restore** and click **Create**.
+#. Click **Next**.
 
-.. figure:: images/files_smb_002.png
+#. Select **Enable Access Based Enumeration** and **Self Service Restore**.
 
-Connect to SMB Share
-++++++++++++++++++++
+   .. figure:: images/15.png
 
-Windows VM for Testing SMB Share
-................................
+   As you are creating a departmental share, it should be created as a **Standard** share. This means that all top level directories and files within the share, as well as connections to the share, are served from a single Files VM.
 
-Use the **Windows2012-*initials* ** VM you created earlier in the "Deploying Workloads" lab.
+   **Distributed** shares are appropriate for home directories, user profiles, and application folders. This type of share shards top level directories across all Files VMs and load balances connections across all Files VMs within the Files cluster.
 
-If you have not deployed a Windows VM, follow this guide to deploy a Windows2012 VM:
+   **Access Based Enumeration (ABE)** ensures that only files and folders which a given user has read access are visible to that user. This is commonly enabled for Windows file shares.
 
-In **Prism > VM > Table**, click **+ Create VM**.
+   **Self Service Restore** allows users to leverage Windows Previous Version to easily restore individual files to previous revisions based on Nutanix snapshots.
 
-Fill out the following fields and click **Save**:
+#. Click **Next**.
 
-- **Name** - SMB-Client-*intials*
-- **Description** - Windows VM for testing Files SMB Shares
-- **vCPU(s)** - 2
-- **Number of Cores per vCPU** - 1
-- **Memory** - 4 GiB
-- Select **+ Add New Disk**
+#. Review the **Summary** and click **Create**.
 
-  - **Operation** - Clone from Image Service
-  - **Image** - Windows2012R2
-  - Select **Add**
-- Select **Add New NIC**
+   .. figure:: images/16.png
 
-  - **VLAN Name** - Primary
-  - Select **Add**
+Testing the Share
+.................
 
-Select the **SMB-Client-*intials* ** VM and click **Power on**.
+#. Connect to your *Initials*\ **-ToolsVM** via RDP or console.
 
-Log into the VM and add it to the **ntnxlab.local** domain.
+   .. note::
 
-- **Username** - administrator@ntnxlab.local
-- **password** - nutanix/4u
+     The Tools VM has already been joined to the **NTNXLAB.local** domain. You could use any domain joined VM to complete the following steps.
 
-Connecting to SMB Share
-.......................
+#. Open ``\\<Intials>-Files.ntnxlab.local\`` in **File Explorer**.
 
-.. note::
+   .. figure:: images/17.png
 
-  You can use any Windows VM joined to the ntnxlab.local domain to complete the following steps.
+#. Test accessing the Marketing share by opening the share and copying or creating files and directories. The **NTNXLAB\\Administrator** user was specified as a Files Administrator during deployment of the Files cluster, giving it read/write access to all shares by default.
 
+   Managing access for other users is no different than any other SMB share.
 
-Log into your Windows VM console, and open ``\\*intials*-Files.ntnxlab.local\`` in **File Explorer**.
+#. Right-click **Marketing > Properties**.
 
-Right-click **marketing > Properties**.
+#. Select the **Security** tab and click **Advanced**.
 
-.. figure:: images/files_smb_004.png
+   .. figure:: images/18.png
 
-Select the **Security** tab and click **Advanced**.
+#. Select **Users (**\ *Initials*\ **-Files\\Users)** and click **Remove**.
 
-.. figure:: images/files_smb_005.png
+#. Click **Add**.
 
-Select **Users (*intials*-Files\\Users)** and click **Remove**.
+#. Click **Select a principal** and specify **Everyone** in the **Object Name** field. Click **OK**.
 
-Click **Add**.
+   .. figure:: images/19.png
 
-Click **Select a principal** and specify **Everyone** in the **Object Name** field. Click **OK**.
+#. Fill out the following fields and click **OK**:
 
-.. figure:: images/files_smb_006.png
+   - **Type** - Allow
+   - **Applies to** - This folder only
+   - Select **Read & execute**
+   - Select **List folder contents**
+   - Select **Read**
+   - Select **Write**
 
-Fill out the following fields and click **OK**:
+   .. figure:: images/20.png
 
-  - **Type** - Allow
-  - **Applies to** - This folder only
-  - Select **Read & execute**
-  - Select **List folder contents**
-  - Select **Read**
-  - Select **Write**
+#. Click **OK > OK > OK** to save the permission changes.
 
-.. figure:: images/files_smb_007.png
+   All users will now be able to create folders and files within the Marketing share.
 
-Click **OK > OK > OK**.
+   It is common for shares utilized by many people to leverage quotas to ensure fair use of resources. Files offers the ability to set either soft or hard quotas on a per share basis for either individual users within Active Directory, or specific Active Directory Security Groups.
 
-.. figure:: images/files_smb_008.png
+#. In **Prism > File Server > Share > Marketing**, click **+ Add Quota Policy**.
 
-In **Prism > File Server > Share > marketing**, click **+ Add Quota Policy**. Fill out the following fields and click **Save**:
+#. Fill out the following fields and click **Save**:
 
-  - Select **Groups**
-  - **Users or Group** - SSP Developers
-  - **Quota** - 10 GiB
-  - **Enforcement Type** - Hard Limit
+   - Select **Group**
+   - **User or Group** - SSP Developers
+   - **Quota** - 10 GiB
+   - **Enforcement Type** - Hard Limit
 
-.. figure:: images/files_smb_003.png
+   .. figure:: images/21.png
+
+#. Click **Save**.
+
+#. With the Marketing share still selected, review the **Share Details**, **Usage** and **Performance** tabs to understand the available on a per share basis, including the number of files & connections, storage utilization over time, latency, throughput, and IOPS.
+
+   .. figure:: images/22.png
