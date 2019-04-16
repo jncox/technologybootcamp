@@ -212,6 +212,7 @@ Access Instructions
 
 The Nutanix Hosted POC environment can be accessed a number of different ways:
 
+
 Parallels VDI
 .................
 
@@ -220,7 +221,7 @@ Login to: https://xld-uswest1.nutanix.com (for PHX) or https://xld-useast1.nutan
 **Nutanix Employees** - Use your NUTANIXDC credentials
 **Non-Employees** - **Username:** POCxxx-User01 (up to POCxxx-User20), **Password:** *<Provided by Instructor>*
 
-Pulse Secure VPN
+Employee Pulse Secure VPN
 ..........................
 
 To download the client: login to https://xlv-uswest1.nutanix.com or https://xlv-useast1.nutanix.com - **Username:** POCxxx-User01 (up to POCxxx-User20), **Password:** *<Provided by Instructor>*
