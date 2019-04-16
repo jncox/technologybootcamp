@@ -75,7 +75,7 @@ What's New
     - AOS & PC 5.10.x
 
 - Optional Lab Updates:
-    - Files
+
 
 Agenda
 ++++++
