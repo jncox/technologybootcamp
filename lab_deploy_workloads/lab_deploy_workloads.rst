@@ -69,9 +69,9 @@ Nutanix validates and distributes these drivers via http://portal.nutanix.com. T
 
 #. Click **Save** to create the VM.
 
-#. Select the VM, then click **Power On** from the **Actions** drop-down menu to turn on the VM.
+#. Select the VM, then click **Power On** from below to turn on the VM.
 
-#. Select the VM, then click **Launch Console** from the **Actions** drop-down menu to access an HTML5 console to interact with the VM.
+#. Select the VM, then click **Launch Console** from below to access an HTML5 console to interact with the VM.
 
 #. Progress through the standard install questions until you reach the Windows install location.
 
