@@ -25,9 +25,9 @@ Explore VM power actions and console access.
 
 #. Select the VM, then click **Launch Console**.
 
-   The console window provides 4 actions: Mount ISO, CTRL-ALT-DEL, Take Screen Capture, and Power.
+   The console window provides 4 actions: **Mount ISO, CTRL-ALT-DEL, Take Screen Capture, and Power**.
 
-   .. figure:: images/manage_workloads_01.png
+   .. figure:: images/manage_workloads_01_a.png
 
    .. note::
 
@@ -76,6 +76,17 @@ VM live migration is a critical feature for any virtualized environment, allowin
    When the task completes, verify that your VM host location has changed from the host recorded above to the new location you selected.
 
    .. figure:: images/manage_workloads_04.png
+
+.. -------------------------------------------------------------------------------------
+.. The Below as soon as 5.11 is GA and we want to run that version for our workshops!!!!
+
+.. .. note::
+..   To see the progress of the migration, click on the All VM Tasks tab at the bottom of the screen. Below is a screenshot of a migration.
+
+.. .. figure:: images/manage_workloads_03_a.png
+
+.. -------------------------------------------------------------------------------------
+
 
 Configuring Affinity Policies
 .............................
@@ -146,5 +157,5 @@ Suggestions:
 Takeaways
 +++++++++
 
-- In this lab you got to experience first hand how AHV provides a complete set of tools and actions that can be done manage the VMs in the cluster.
-- It is possible to register an ESXI cluster to Prism and be able to perform some of the basic VM management tasks right from Prism as well.
+- In this lab you got to experience first hand how AHV provides a complete set of tools and actions that can be done to manage the VMs in the cluster.
+- It is possible to register an ESXi cluster (via vCenter) to Prism and be able to perform some of the basic VM management tasks right from Prism as well.

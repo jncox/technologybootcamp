@@ -83,7 +83,7 @@ You can run a STIG report, which will check on all the STIGs and report on which
 
 The steps to run the STIG report are as follows:
 
-#. Connect to Controller VM (CVM) as nutanix user via SSH (Using Terminal, putty, or similar program)
+#. Connect to one of the **Controller VM (CVM)** as nutanix user via SSH (Using Terminal, putty, or similar program)
 
 #. Change to the root directory of the CVM
 
@@ -95,13 +95,13 @@ The steps to run the STIG report are as follows:
 
 .. code-block:: bash
 
-  sudo -u root ls -l root
+  sudo -u root ls -l /root
 
 You should see a similar output:
 
 .. code-block:: bash
 
-  nutanix@NTNX-14SX35100046-A-CVM:10.21.71.29:~# sudo -u root ls -l root
+  nutanix@NTNX-14SX35100046-A-CVM:10.21.71.29:~# sudo -u root ls -l /root
   total 248
   -rw-------. 1 root root   3314 Sep 11  2017 anaconda-ks.cfg
   drwxr-x---. 2 root root   4096 Dec 13 23:04 filesystems
@@ -129,13 +129,13 @@ The output will go into the root user log folder.
 
 .. code-block:: bash
 
-  sudo -u root ls -l home/log | grep STIG
+  sudo -u root ls -l /home/log | grep STIG
 
 #. Copy the report to the nutanix home directory, substituting the actual file name for the asterisks.
 
 .. code-block:: bash
 
-  sudo -u root cp home/log STIG-report-**-**-****-**-**-** /home/nutanix
+  sudo -u root cp /home/log STIG-report-**-**-****-**-**-** /home/nutanix
 
 #. List the files in the /home/nutanix folder.
 
@@ -208,9 +208,9 @@ Compromise the /etc/shadow file
 
 #. The following text was extracted from one of the security checks under the AOS STIGs:
 
-- **Rule Version (STIG-ID)**: NTNX-51-000034
-- **Rule Title**: The /etc/shadow file must be group-owned by root.
-- **Fix Text**: salt-call state.sls security/CVM/fdpermsownerCVM
+  - **Rule Version (STIG-ID)**: NTNX-51-000034
+  - **Rule Title**: The /etc/shadow file must be group-owned by root.
+  - **Fix Text**: salt-call state.sls security/CVM/fdpermsownerCVM
 
 #. Change to the root directory of the CVM
 
@@ -222,7 +222,7 @@ Compromise the /etc/shadow file
 
 .. code-block:: bash
 
-  sudo -u root ls -l etc/shadow
+  sudo -u root ls -l /etc/shadow
   ----------. 1 root root 943 Dec 18 15:37 /etc/shadow
 
 #. Change the group ownership:
@@ -243,7 +243,7 @@ Compromise the /etc/shadow file
 
 .. code-block:: bash
 
-  sudo -u root ls -l etc/shadow
+  sudo -u root ls -l /etc/shadow
 
 Compromise a world-writable directory /tmp
 ..........................................
