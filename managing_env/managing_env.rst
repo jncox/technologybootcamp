@@ -173,12 +173,12 @@ Video Demonstration: Cluster Software Update
 
 This demo shows how easy it is to upgrade a Nutanix cluster. Software upgrades are non-disruptive to the environment and can be performed at any time.
 
-Cluster Upgrade - https://youtu.be/_dzyaWbRkAQ
+Cluster Upgrade - https://youtu.be/HywmgZdvErQ
 
 
-Video Demonstration: Cluster Expansion
+.. Video Demonstration: Cluster Expansion
 .......................................
 
-This demo shows the ease with which a cluster could be expanded through the addition of one more node into the demo environment.
+.. This demo shows the ease with which a cluster could be expanded through the addition of one more node into the demo environment.
 
-Cluster Expansion - https://youtu.be/qg0vU48d5XA
+.. Cluster Expansion - https://youtu.be/qg0vU48d5XA
