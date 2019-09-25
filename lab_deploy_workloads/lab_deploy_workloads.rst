@@ -18,6 +18,14 @@ In the following exercise we'll walk through creating VMs from source media and 
 Deploying Workloads
 +++++++++++++++++++
 
+In addition to storage, VM creation, management, and monitoring can all be performed for Nutanix AHV directly through Prism.
+
+.. note::
+
+   Prism also offers native support for VM CRUD operations for Nutanix clusters running ESXi.
+
+In the following exercise we'll walk through creating VMs from source media and from existing disk images.
+
 Creating a Windows VM
 .....................
 
@@ -36,6 +44,8 @@ Nutanix validates and distributes these drivers via http://portal.nutanix.com. T
 #. In **Prism Element > VM > Table**, click **+ Create VM**.
 
 #. Fill out the following fields and click **Save**:
+
+    Leave other settings at their default values.
 
    - **Name** - *Initials*-Windows_VM
    - **Description** - (Optional) Description for your VM.
@@ -63,19 +73,8 @@ Nutanix validates and distributes these drivers via http://portal.nutanix.com. T
        - **Operation** - Clone from Image Service
        - **Image** - Nutanix VirtIO ISO
        - Select **Add**
-
-   .. -------------------------------------------------------------------------------------
-   .. The Below as soon as 5.11 is GA and we want to run that version for our workshops!!!!
-
-   .. - **Boot Configuration**
-    ..  - Leave the default selected **Legacy Boot**
-
-      .. .. note::
-      ..  At the following URL you can find the supported Operating Systems
-      ..  http://my.nutanix.com/uefi_boot_support
-
-   .. -------------------------------------------------------------------------------------
-
+       - **Boot Configuration**
+       - Leave the default selected **Legacy Boot**
 
    - Select **Add New NIC**
        - **VLAN Name** - Primary
@@ -85,7 +84,15 @@ Nutanix validates and distributes these drivers via http://portal.nutanix.com. T
 
 #. Click **Save** to create the VM.
 
-#. Select the VM, then click **Power On** from the **Actions** drop-down menu to turn on the VM.
+       .. note::
+
+         At the following URL you can find the supported Operating Systems
+
+         http://my.nutanix.com/uefi_boot_support
+
+#. Select the VM, then click **Power On** from the list of action links (below the table) to turn on the VM.
+
+   .. figure:: images/deploy_workloads_vm_options.png
 
 #. Select the VM, then click **Launch Console** from the **Actions** drop-down menu to access an HTML5 console to interact with the VM.
 
@@ -116,7 +123,7 @@ Nutanix validates and distributes these drivers via http://portal.nutanix.com. T
 
 #. Select that disk and continue with the normal install process.
 
-#. After the installation completes, the Windows install ISO can be unmounted and the additional CD-ROM used for the drivers can be removed from the VM.
+#. After the installation completes, if desired, the Windows install and the VirtIO ISOs can be unmounted from within Windows, and the CD-ROMs can be removed from the VM by selecting the VM in the table, clicking **Update** from the list of action links, and removing the CD-ROM disks (VM must be powered off).
 
    .. note::
 
@@ -124,11 +131,15 @@ Nutanix validates and distributes these drivers via http://portal.nutanix.com. T
 
      .. figure:: images/deploy_workloads_08.png
 
-#. Following OS installation you can complete the **Nutanix Guest Tools (NGT)** installation by selecting the VM in Prism and clicking **Manage Guest Tools > Enable Guest Tools > Mount Guest Tools**.
+#. Following OS installation you can complete the **Nutanix Guest Tools (NGT)** installation by selecting the VM in Prism and clicking **Manage Guest Tools > Enable Nutanix Guest Tools > Mount Guest Tools**, and clicking **Submit**.
 
    This will use the virtual CD-ROM device to mount the NGT installation ISO to the VM. NGT includes the previously installed VirtIO drivers, as well as services to support **Self-Service File Restore (SSR)** and **Application Consistent (VSS) snapshots**.
 
-#. Return to the Windows VM console to complete the NGT installation.
+    .. figure:: images/deploy_workloads_nutanix_guest_tools.png
+
+#. Return to the VM console to complete the NGT installation by clicking on the Nutanix Guest Tools CD.
+
+    .. figure:: images/deploy_workloads_ngt_mounted.png
 
 Creating a Linux VM
 ...................
@@ -150,21 +161,10 @@ In this exercise you will create a CentOS VM from an existing, pre-installed dis
       - **Operation** - Clone from Image Service
       - **Image** - CentOS7.qcow2
       - Select **Add**
+      - **Boot Configuration**
+      - Leave the default selected **Legacy Boot**
 
-      *This will create a thin clone of the existing CentOS disk image*
-
-.. -------------------------------------------------------------------------------------
-.. The Below as soon as 5.11 is GA and we want to run that version for our workshops!!!!
-
-.. - **Boot Configuration**
- ..  - Leave the default selected **Legacy Boot**
-
-   .. .. note::
-   ..  At the following URL you can find the supported Operating Systems
-   ..  http://my.nutanix.com/uefi_boot_support
-
-.. -------------------------------------------------------------------------------------
-
+    *This will create a thin clone of the existing CentOS disk image*
 
    - Select **Add New NIC**
       - **VLAN Name** - Primary

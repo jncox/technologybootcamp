@@ -39,19 +39,9 @@ From the Firefox web browser (preferred), log into the Nutanix Prism GUI using t
 
    .. figure:: images/nutanix_tech_overview_02.png
 
-#. Review the UI navigation options.
+#. Review the UI navigation options under the **View Options** pull-down menu. The label of this menu changes based on the dashboard that is currently displayed. For example, from the Home dashboard it will be labeled **Home**, from the Health dashboard it will be labeled **Health**, etc.
 
    .. figure:: images/nutanix_tech_overview_03.png
-
-   .. --------------------------------------------------------------------------------------
-   .. The Below as soon as 5.11 is GA and we wnat to run that version for our workshops!!!!
-
-
-   .. Since version 5.11 the home screen has been changed to the following
-
-   .. .. figure:: images/nutanix_tech_overview_03_5-11.png
-
-   .. --------------------------------------------------------------------------------------
 
 #. Examine the cluster hardware under **Prism > Hardware**, click **Hardware**, then click **Diagram**.
 
@@ -87,21 +77,12 @@ From the Firefox web browser (preferred), log into the Nutanix Prism GUI using t
 
    .. figure:: images/nutanix_tech_overview_05.png
 
-.......................
 Prism Element UI Review
 .......................
 
 Where would you locate the version of AOS you are running?
 
-.. figure:: images/nutanix_tech_overview_06.png
-
-.. --------------------------------------------------------------------------------------
-.. The Below as soon as 5.11 is GA and we want to run that version for our workshops!!!!
-.. Or for the 5.11 version
-
 .. figure:: images/nutanix_tech_overview_06_5-11.png
-
-.. --------------------------------------------------------------------------------------
 
 You can do this by clicking on the **User** drop down :fa:`user`, and clicking **About Nutanix**.
 
@@ -121,7 +102,7 @@ What page would show you the latest activity in the system? On this page, you ca
 
 .. figure:: images/nutanix_tech_overview_09.png
 
-First Way, In **Prism > Tasks**, click **Tasks**. Second Way, click the donut :fa:`circle-o` in the top bar.
+From the View Options menu, select **Tasks**, or click the circle :fa:`circle-o` icon in the toolbar, to the right of the bell icon :fa:`bell`.
 
 .. note::
 

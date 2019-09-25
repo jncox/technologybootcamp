@@ -59,13 +59,12 @@ Protection Domains
 #. In **Prism Element > Data Protection > Table**, click **+ Protection Domain > Async DR** to begin creating a PD.
 
    .. note::
-      Synchronous replication (Metro Availability) is currently support on ESXi and Hyper-V. It will be supported in AHV in a future release.
-.. -------------------------------------------------------------------------------------
-.. Add the below when running 5.11
-.. When opening the Data Protection context of the menu a warning screen will appear. Click on the **OK** button to move forward.
 
-.. .. figure:: images/data_protection_01.png
-.. -------------------------------------------------------------------------------------
+      Synchronous replication (Metro Availability) is currently support on ESXi. It will be supported in AHV in a future release.
+
+#. When opening the Data Protection context of the menu a warning screen will appear. Click on the **OK** button to move forward.
+
+ .. figure:: images/data_protection_01.png
 
 #. Provide a name for the PD, and click **Create**.
 

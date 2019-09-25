@@ -48,6 +48,10 @@ Let's use Prism Element to perform a basic container setup.
    - Select **Compression**
    - **Delay (In Minutes)** - 0
 
+   .. note::
+
+     Leave other settings at their default values.
+
 #. Click **Save**.
 
    .. figure:: images/storage_config_01.png

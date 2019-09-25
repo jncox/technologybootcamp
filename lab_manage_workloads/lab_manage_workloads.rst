@@ -46,6 +46,8 @@ Cloning VMs
 
 #. Fill out the following fields and click **Save**:
 
+   Leave other settings at their default values.
+
    - **Number of Clones** - 2
    - **Prefix Name**  - *Initials*-Linux-Clone
    - **Starting Index Number** - 1
@@ -77,16 +79,10 @@ VM live migration is a critical feature for any virtualized environment, allowin
 
    .. figure:: images/manage_workloads_04.png
 
-.. -------------------------------------------------------------------------------------
-.. The Below as soon as 5.11 is GA and we want to run that version for our workshops!!!!
+.. note::
+   To see the progress of the migration, click on the All VM Tasks tab at the bottom of the screen. Below is a screenshot of a migration.
 
-.. .. note::
-..   To see the progress of the migration, click on the All VM Tasks tab at the bottom of the screen. Below is a screenshot of a migration.
-
-.. .. figure:: images/manage_workloads_03_a.png
-
-.. -------------------------------------------------------------------------------------
-
+ .. figure:: images/manage_workloads_03_a.png
 
 Configuring Affinity Policies
 .............................
