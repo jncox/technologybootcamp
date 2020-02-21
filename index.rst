@@ -44,6 +44,7 @@
   :name: _optional_labs
   :hidden:
 
+  image_create/image_create
   .. lab_image_configuration/lab_image_configuration
 
 .. toctree::
