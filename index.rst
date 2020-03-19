@@ -72,8 +72,9 @@ At the end of the bootcamp, attendees should understand the Core concepts and te
 
 What's New
 ++++++++++
+
 - Workshop updated for the following software versions:
-    - AOS & PC 5.11
+    - AOS & PC 5.11.2.3
 
 - Optional Lab Updates:
 

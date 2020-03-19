@@ -135,7 +135,7 @@ The output will go into the root user log folder.
 
 .. code-block:: bash
 
-  sudo -u root cp /home/log STIG-report-**-**-****-**-**-** /home/nutanix
+  sudo -u root cp /home/log/STIG-report-**-**-****-**-**-** /home/nutanix
 
 #. List the files in the /home/nutanix folder.
 
